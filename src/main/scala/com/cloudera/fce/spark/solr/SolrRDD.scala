@@ -92,12 +92,7 @@ object SolrRDD {
                    transform: SolrDocument => T) = {
       val conf = if (config.contains(SolrUtils.JAAS_PROPERTY) && !config(SolrUtils.JAAS_PROPERTY).isEmpty) {
         val server = SolrUtils.createSolrServer(config)
-        config ++ Map(
-          SolrUtils.DELEGATION_TOKEN_STRING ->
-            SolrUtils.getDelegationToken(
-              config(SolrUtils.JAAS_PROPERTY),
-              server)
-        )
+        config ++ Map(SolrUtils.DELEGATION_TOKEN_STRING -> SolrUtils.getDelegationToken(server))
       } else config
       new SolrRDD[T](sc, query, collection, conf, transform)
     }
